@@ -1,0 +1,28 @@
+; --------------------------------------------------------------------------------
+; CPU setup
+
+SYStem.RESet
+SYStem.BdmClock 4.0MHz
+SYStem.CPU MPC55XX
+SYStem.DETECT.CPU
+SYStem.Option.WATCHDOG OFF
+SYStem.Up
+
+; initialize internal SRAM
+Data.Set EA:0x40000000--0x40040000 %Quad 0
+
+; setup MMU for flash, RAM and register access
+MMU.Set TLB1 0x0 0x00000000 0x00000000 0x00000000
+MMU.Set TLB1 0x1 0xC0000500 0xFFF0000A 0xFFF0003F
+MMU.Set TLB1 0x2 0xC0000700 0x20000000 0x2000003F
+MMU.Set TLB1 0x3 0xC0000400 0x40000008 0x4000003F
+MMU.Set TLB1 0x4 0xC0000500 0xC3F00008 0xC3F0003F
+MMU.Set TLB1 0x5 0xC0000700 0x00000000 0x0000003F
+
+data.load.elf C:\SourceTree\neos178s_fcc.git\Test\targetImage\neos178s.elf
+
+go
+
+ENDDO
+
+
